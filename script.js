@@ -31,11 +31,11 @@ startBtn.addEventListener('click', () => {
         clearBtn.style.display = "inline-block"; 
         timerDisplay.style.display = "inline-block";
         lapBtn.style.display = "inline-block";
-
         stopBtn.disabled = false;
         clearBtn.disabled = false;
         timerDisplay.disabled = false;
         lapBtn.disabled = false;
+
 
         timer = setInterval(updateTime, 10);  
     }
@@ -45,24 +45,43 @@ stopBtn.addEventListener('click', () => {
     if (isRunning) {
         isRunning = false;
         startBtn.disabled = false;
+         
         stopBtn.disabled = true;
+        lapBtn.disabled = true
+        startBtn.style.display = "inline-block"; 
+        stopBtn.style.display = "none";  
+        lapBtn.style.display = "inline-block";   
         clearInterval(timer);
+
     }
 });
 
-clearBtn.addEventListener('click', () => {
+
+    clearBtn.addEventListener('click', () => {
     isRunning = false;
+    startBtn.style.display = "inline-block";  
+    stopBtn.style.display = "none";           
+    clearBtn.style.display = "none";          
+    lapBtn.style.display = "none";            
+    lapContainer.style.display = "none";
+    //disable
     startBtn.disabled = false;
     stopBtn.disabled = true;
     clearBtn.disabled = true;
-
+    lapBtn.disabled = true;
     seconds = 0;
     minutes = 0;
     hours = 0;
     milliseconds = 0;  
-    totalElapsedTime = 0; 
-    lastLapTime = 0;  
-
+     totalElapsedTime = 0; 
+    lastLapTime = 0; 
+      // Clear lap history
+      const lapList = document.getElementById('lapList');
+      if (lapList) {
+          while (lapList.firstChild) {
+          lapList.removeChild(lapList.firstChild);  // Remove each lap entry instead of clearing all at once
+          }
+      }
     timerDisplay.textContent = formatTime(hours, minutes, seconds, milliseconds);
     clearInterval(timer);
 });
@@ -141,7 +160,7 @@ lapBtn.addEventListener('click', () => {
 });
 
 
-function formatTimeFromMilliseconds(milliseconds) {
+    function formatTimeFromMilliseconds(milliseconds) {
     let hours = Math.floor(milliseconds / 3600000);
     let minutes = Math.floor((milliseconds % 3600000) / 60000);
     let remainingSeconds = Math.floor((milliseconds % 60000) / 1000);
@@ -155,3 +174,5 @@ function formatTimeFromMilliseconds(milliseconds) {
 
     return `${hours}:${minutes}:${remainingSeconds}.${remainingMilliseconds}`;
 }
+
+
