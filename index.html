@@ -1,0 +1,48 @@
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Timer</title>
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+    <div class="timer-container">
+        <div id="timerDisplay">00:00:00</div>
+        <div class="button-container">
+            <button id="startBtn" >Start</button>
+            <button id="stopBtn" >Stop</button>
+            <button id="lapBtn" >Lap</button>
+            <button id="clearBtn" >Reset</button>
+           
+        </div>
+        
+<!--  lap details -->
+<div id="lapContainer" style="overflow-y: auto; height: 200px;" >
+    <table id="lapTable">
+        <thead>
+            <tr>
+                <th>Lap Number</th>
+                <th>Lap Time</th>
+                <th>Total Time</th>
+            </tr>
+        </thead>
+        <tbody id="lapList">
+            <!-- Lap details -->
+        </tbody>
+    </table>
+</div>
+
+  
+</div>
+
+
+    </div>
+
+    <script src="script.js"></script> 
+</body>
+</html>  
+
+
+
+
