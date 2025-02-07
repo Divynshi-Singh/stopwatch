@@ -1,29 +1,24 @@
-
 const timerDisplay = document.getElementById('timerDisplay');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const clearBtn = document.getElementById('clearBtn');
 const lapBtn = document.getElementById("lapBtn");
 const lapContainer = document.getElementById("lapContainer");
+
 stopBtn.classList.add("hidden");
 clearBtn.classList.add("hidden");
 lapBtn.classList.add("hidden");
 lapContainer.classList.add("hidden");
 
-let timer;
-let timeString = '00:00:00.00';  // Initial time in string format
-
 let isRunning = false;
-let startTime = 0;
 let totalElapsedTime = 0;
 let lastLapTime = 0;
+let lastTimestamp = 0; 
+let animationFrameId = null; 
 
 startBtn.addEventListener('click', () => {
-    startTime = Date.now() - totalElapsedTime;
-
     if (!isRunning) {
         isRunning = true;
-        hasStarted = true;  // Flag set when Start is clicked
         startBtn.style.display = "none";
         stopBtn.style.display = "inline-block";
         clearBtn.style.display = "inline-block";
@@ -33,24 +28,27 @@ startBtn.addEventListener('click', () => {
         clearBtn.disabled = false;
         lapBtn.disabled = false;
 
-        timer = setInterval(updateTime, 10);
+        lastTimestamp = performance.now();
+        requestAnimationFrame(updateTime); 
     }
 });
-
 stopBtn.addEventListener('click', () => {
     if (isRunning) {
         isRunning = false;
         startBtn.disabled = false;
         stopBtn.disabled = true;
         lapBtn.disabled = true;
+        clearBtn.disabled = false;
         startBtn.style.display = "inline-block";
         stopBtn.style.display = "none";
-        lapBtn.style.display = "none";
+        lapBtn.style.display = "inline-block";
+        lapBtn.style.cursor = "pointer";
+        clearBtn.style.cursor = "pointer";
         lapContainer.style.display = "none";
-        clearInterval(timer);
-        stopTimer(); 
+        cancelAnimationFrame(animationFrameId); 
     }
 });
+
 clearBtn.addEventListener('click', () => {
     isRunning = false;
     startBtn.style.display = "inline-block";
@@ -71,20 +69,25 @@ clearBtn.addEventListener('click', () => {
         }
     }
     timerDisplay.textContent = formatTime(0, 0, 0, 0);
-    clearInterval(timer);
+    cancelAnimationFrame(animationFrameId); 
 });
 
-function updateTime() {
-    totalElapsedTime += 10;
+function updateTime(timestamp) {
+    if (!lastTimestamp) {
+        lastTimestamp = timestamp;
+    }
+
+    const deltaTime = timestamp - lastTimestamp;
+    totalElapsedTime += deltaTime;
+    lastTimestamp = timestamp;
+
     timerDisplay.textContent = formatTimeFromMilliseconds(totalElapsedTime);
+
+    if (isRunning) {
+        animationFrameId = requestAnimationFrame(updateTime); 
+    }
 }
-function formatTime(h, m, s, ms) {
-    if (s < 10) s = '0' + s;
-    if (m < 10) m = '0' + m;
-    if (h < 10) h = '0' + h;
-    if (ms < 10) ms = '0' + ms;
-    return h + ':' + m + ':' + s + '.' + ms;  // No spaces around colons
-}
+
 function formatTimeFromMilliseconds(milliseconds) {
     let hours = Math.floor(milliseconds / 3600000);
     let minutes = Math.floor((milliseconds % 3600000) / 60000);
@@ -120,65 +123,6 @@ lapBtn.addEventListener('click', () => {
 
     document.getElementById('lapList').appendChild(newLapRow);
 
-    const lapContainer = document.getElementById('lapContainer');
-    if (lapContainer.style.display === 'none') {
-        lapContainer.style.display = 'block';
-    }
+    lapContainer.style.display = 'block';
     document.getElementById('lapContainer').scrollTop = document.getElementById('lapContainer').scrollHeight;
-});
-
-let hasStarted = false;  
-
-document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-        stopTimer();
-    } else {
-        if (hasStarted) {
-            resumeTimer();
-       }
-    }
-});
-function stopTimer() {
-    if (isRunning) {
-        isRunning = false;
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        lapBtn.disabled = true;
-        startBtn.style.display = "inline-block";
-        stopBtn.style.display = "none";
-        lapBtn.style.display = "none";
-        clearInterval(timer);
-    }
-}
-function resumeTimer() {
-    if (!isRunning && hasStarted) {
-        isRunning = true;
-        startBtn.style.display = "none";
-        stopBtn.style.display = "inline-block";
-        clearBtn.style.display = "inline-block";
-        timerDisplay.style.display = "inline-block";
-        lapBtn.style.display = "inline-block";
-        stopBtn.disabled = false;
-        clearBtn.disabled = false;
-        lapBtn.disabled = false;
-        startTime = Date.now() - totalElapsedTime;
-        timer = setInterval(updateTime, 10);
-    }
-}
-
-startBtn.addEventListener('click', () => {
-    startTime = Date.now() - totalElapsedTime;
-    if (!isRunning) {
-        isRunning = true;
-        hasStarted = true; 
-        startBtn.style.display = "none";
-        stopBtn.style.display = "inline-block";
-        clearBtn.style.display = "inline-block";
-        timerDisplay.style.display = "inline-block";
-        lapBtn.style.display = "inline-block";
-        stopBtn.disabled = false;
-        clearBtn.disabled = false;
-        lapBtn.disabled = false;
-        timer = setInterval(updateTime, 10);
-    }
 });
