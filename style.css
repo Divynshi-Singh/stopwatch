@@ -2,7 +2,6 @@
     display: none;
 }
 
-
 * {
     margin: 0;
     padding: 0;
@@ -21,18 +20,15 @@ body {
 }
 
 .timer-container {
-
-    background-color: orange;
+    background-color: rgb(243, 175, 50);
     align-content: center;
     padding: 40px;
     border-radius: 20px;
-    /* box-shadow: 0 15px 30px rgba(18, 17, 17, 0.1); */
     box-shadow: 0 25px 50px rgba(10, 9, 9, 0.2);
     text-align: center;
     width: 100%;
     max-width: 450px;
-    background-color: rgb(243, 175, 50);
-    /* box-shadow: 0 8px 15px rgba(0, 0, 0, 0.25);  */
+    min-width: 280px;
 }
 
 #timerDisplay {
@@ -48,36 +44,50 @@ body {
     font-weight: 700;
     color: rgb(232, 219, 219);
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-
-
     text-align: center;
-
-
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
+    margin-bottom: 15px;
+}
 
+
+@media (max-width: 800px) {
+    #head {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 600px) {
+    #head {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 400px) {
+    #head {
+        font-size: 2rem;
+    }
 }
 
 .button-container {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 10px;
     margin-top: 20px;
-
 }
 
 button {
     color: white;
     border: none;
-    padding: 15px 25px;
+    padding: 10px 15px;
     font-size: 1.2rem;
     font-weight: 500;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    min-width: 110px;
+    min-width: 90px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -126,7 +136,7 @@ button:disabled {
     }
 
     #timerDisplay {
-        font-size: 4rem;
+        font-size: 3.5rem;
     }
 
     button {
@@ -160,7 +170,6 @@ button:disabled {
     max-height: 300px;
     overflow-y: auto;
     margin-top: 20px;
-
 }
 
 @media (max-width: 400px) {
@@ -175,6 +184,10 @@ button:disabled {
     button {
         font-size: 0.9rem;
         padding: 10px 15px;
+    }
+
+    button {
+        gap: 3px;
     }
 
     #lapTable th,

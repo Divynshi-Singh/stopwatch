@@ -9,16 +9,16 @@
 </head>
 
 <body>
-    <div class="timer-container" class="hidden">
+    <div class="timer-container">
         <h1 id="head">STOPWATCH</h1>
         <div id="timerDisplay">00:00:00:00</div>
         <div class="button-container">
-            <button id="startBtn">Start</button>
-            <button id="stopBtn">Stop</button>
-            <button id="lapBtn">Lap</button>
-            <button id="clearBtn">Reset</button>
+            <button id="startBtn" >Start</button>
+            <button id="stopBtn" class="hidden" disabled>Stop </button>
+            <button id="lapBtn" class="hidden"  disabled>Lap</button>
+            <button id="clearBtn" class="hidden" disabled>Reset</button>
         </div>
-        <div id="lapContainer">
+        <div id="lapContainer" class="hidden">
             <table id="lapTable">
                 <thead>
                     <tr>

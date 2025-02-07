@@ -5,10 +5,10 @@ const stopBtn = document.getElementById('stopBtn');
 const clearBtn = document.getElementById('clearBtn');
 const lapBtn = document.getElementById("lapBtn");
 const lapContainer = document.getElementById("lapContainer");
-stopBtn.style.display = 'none';
-clearBtn.style.display = "none";
-lapBtn.style.display = "none";
-lapContainer.style.display = "none";
+stopBtn.classList.add("hidden");
+clearBtn.classList.add("hidden");
+lapBtn.classList.add("hidden");
+lapContainer.classList.add("hidden");
 
 let timer;
 let timeString = '00:00:00.00';  // Initial time in string format
