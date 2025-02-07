@@ -1,3 +1,4 @@
+
 const timerDisplay = document.getElementById('timerDisplay');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
@@ -13,39 +14,43 @@ lapContainer.classList.add("hidden");
 let isRunning = false;
 let totalElapsedTime = 0;
 let lastLapTime = 0;
-let lastTimestamp = 0; 
-let animationFrameId = null; 
+let lastTimestamp = 0;
+let animationFrameId = null;
 
 startBtn.addEventListener('click', () => {
     if (!isRunning) {
         isRunning = true;
+        
         startBtn.style.display = "none";
         stopBtn.style.display = "inline-block";
+        stopBtn.textContent = "Stop";  
         clearBtn.style.display = "inline-block";
-        timerDisplay.style.display = "inline-block";
         lapBtn.style.display = "inline-block";
         stopBtn.disabled = false;
         clearBtn.disabled = false;
         lapBtn.disabled = false;
 
         lastTimestamp = performance.now();
-        requestAnimationFrame(updateTime); 
+        requestAnimationFrame(updateTime);  
     }
 });
+
 stopBtn.addEventListener('click', () => {
     if (isRunning) {
+        
         isRunning = false;
-        startBtn.disabled = false;
-        stopBtn.disabled = true;
-        lapBtn.disabled = true;
-        clearBtn.disabled = false;
-        startBtn.style.display = "inline-block";
-        stopBtn.style.display = "none";
-        lapBtn.style.display = "inline-block";
+        stopBtn.textContent = "Resume";  
         lapBtn.style.cursor = "pointer";
-        clearBtn.style.cursor = "pointer";
-        lapContainer.style.display = "none";
-        cancelAnimationFrame(animationFrameId); 
+        cancelAnimationFrame(animationFrameId);  
+        lapBtn.disabled = true;  
+    } else {
+        
+        isRunning = true;
+        stopBtn.textContent = "Stop";  
+        lapBtn.style.cursor = "pointer";
+        lastTimestamp = performance.now();  
+        requestAnimationFrame(updateTime);  
+        lapBtn.disabled = false;  
     }
 });
 
@@ -56,27 +61,27 @@ clearBtn.addEventListener('click', () => {
     clearBtn.style.display = "none";
     lapBtn.style.display = "none";
     lapContainer.style.display = "none";
+    
     startBtn.disabled = false;
     stopBtn.disabled = true;
     clearBtn.disabled = true;
     lapBtn.disabled = true;
     totalElapsedTime = 0;
     lastLapTime = 0;
+    lastTimestamp = 0;  // Reset the timestamp
     const lapList = document.getElementById('lapList');
     if (lapList) {
         while (lapList.firstChild) {
             lapList.removeChild(lapList.firstChild);
         }
     }
-    timerDisplay.textContent = formatTime(0, 0, 0, 0);
-    cancelAnimationFrame(animationFrameId); 
+    timerDisplay.textContent = formatTimeFromMilliseconds(0);
+    cancelAnimationFrame(animationFrameId);  // Stop the animation
 });
-
 function updateTime(timestamp) {
     if (!lastTimestamp) {
         lastTimestamp = timestamp;
     }
-
     const deltaTime = timestamp - lastTimestamp;
     totalElapsedTime += deltaTime;
     lastTimestamp = timestamp;
@@ -84,10 +89,9 @@ function updateTime(timestamp) {
     timerDisplay.textContent = formatTimeFromMilliseconds(totalElapsedTime);
 
     if (isRunning) {
-        animationFrameId = requestAnimationFrame(updateTime); 
+        animationFrameId = requestAnimationFrame(updateTime);  // Keep the timer running
     }
 }
-
 function formatTimeFromMilliseconds(milliseconds) {
     let hours = Math.floor(milliseconds / 3600000);
     let minutes = Math.floor((milliseconds % 3600000) / 60000);
@@ -101,7 +105,7 @@ function formatTimeFromMilliseconds(milliseconds) {
     remainingMilliseconds = Math.floor(remainingMilliseconds / 10);
     remainingMilliseconds = remainingMilliseconds.toString().padStart(2, '0');
 
-    return `${hours}:${minutes}:${remainingSeconds}.${remainingMilliseconds}`;
+    return `${hours}:${minutes}:${remainingSeconds}:${remainingMilliseconds}`;
 }
 
 lapBtn.addEventListener('click', () => {
